@@ -1,0 +1,34 @@
+void Config::load_config_file(const std::string& file_path)
+{
+    // On ouvre le fichier en mode lecture 
+    std::ifstream file(file_path);
+    // On vérifie si le fichier existe déjà 
+    if(!file.good()){
+        // Si le fichier n'existe pas on le crée 
+        std::ofstream newfile(file_path);
+        // on affiche un message pour informer l'utilisateur
+        std::cout<<"file created"<<std::endl;
+        return;
+    }
+    // On lit chaque ligne du fichier 
+    std::string line;
+    while (std::getline(file, line))
+    {
+        // On sépare la ligne en clé et valeur
+        size_t pos = line.find(':');
+        std::string key = line.substr(0, pos);
+        std::string value = line.substr(pos + 1);
+
+        // On enlève les espaces inutiles 
+        key = std::string(key.c_str());
+        value = std::string(value.c_str());
+
+        // On affecte la valeur correspondant à la clé
+        if (key == "Folder")
+            folder_ = value;
+        else if (key == "extension")
+            extensions_.push_back(value);
+        else if (key == "date")
+            date_ = value;
+    }
+}
